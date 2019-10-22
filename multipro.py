@@ -98,7 +98,7 @@ def brighten(color):
             b = color[2]
         pixels.fill((r, g, b))
         pixels.show()
-        
+
 def spiral(color):
     for i in range(qty):
         if color == 'rainbow':
@@ -115,7 +115,10 @@ def spiral(color):
         else:
             pixels[i] = color
         pixels.show()
-    dim(color)    
+    if color == 'rainbow':
+        dim((220, 220, 220))
+    else:
+        dim(color)    
 
 def spiralback(color):
     for i in reversed(range(qty)):
@@ -174,7 +177,6 @@ def f(l, c, o):
     else:
         pixels.fill((0, 0, 0))
         pixels.show()
-        return 0
     l.release()
 
 #main
