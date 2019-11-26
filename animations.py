@@ -1,3 +1,4 @@
+
 from multiprocessing import Process, Lock, Value
 import board
 import neopixel
@@ -6,7 +7,7 @@ import sys
 import random
 
 #array that holds the number of pixels of each triangle
-triangles = [0, 213, 184, 159, 141, 113, 84, 55, 32]
+triangles = [0, 213, 184, 159, 141, 113, 84, 57, 32]
 qty = sum(triangles)
 
 #set the brightness of LEDs with the brightness param
@@ -175,6 +176,27 @@ def blink(color):
     dim(color)
 
 def rings(color):
+    amt = 0
+    for i in range(1, len(triangles)):
+        for j in range(0, max(color), 5):
+            r = j
+            if r >= color[0]:
+                r = color[0]
+            g = j
+            if g >= color[1]:
+                g = color[1]
+            b =  j
+            if b >= color[2]:
+                b = color[2]
+        amt += triangles[i-1]
+        for x in range(amt,amt+triangles[i],1):
+            pixels[x] = (r, g, b)
+        pixels.show()
+        time.sleep(0.2)
+        pixels.fill((0, 0, 0))
+        pixels.show()
+
+def ringso(color):
     triangle = 0
     for i in range(1, len(triangles)):
         for j in range(0, max(color), 5):
@@ -190,19 +212,22 @@ def rings(color):
         triangle += triangles[i-1]
         for x in range(triangle,triangle+triangles[i],1):
             pixels[x] = (r, g, b)
-        pixels.show()
-        time.sleep(0.1)
-        dim(color)
+            pixels.show()
+            time.sleep(0.1)
+            dim(color)
 
 def sparkle(color):
     pixels = neopixel.NeoPixel(board.D18, qty, auto_write=False)
-    inc = 40
-    for x in range(0, qty, inc):
-        pixels[random.randrange(x, x+inc)] = color
-        inc-1
-    pixels.show()
-    pixels.fill((0,0,0))
-    
+    while True:
+        inc = 100
+        for x in range(inc, qty, inc):
+           pixels[random.randrange(x-inc, x)] = color
+           inc-=1
+        pixels.show()
+        time.sleep(0.1)
+        pixels.fill((0, 0, 0))
+        pixels.show()
+
 #alternate through animations
 def alternate(num):
     if num == 1:
